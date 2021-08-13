@@ -28,7 +28,6 @@ function Astar(startNode, endNode) {
         temp = temp.previous;
       }
       return {path, visitedNodes};
-      console.log("Path has been found");
       //return path
     }
 
