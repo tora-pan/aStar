@@ -6,6 +6,9 @@ function Astar(startNode, endNode) {
   //shortest path of nodes
   let path = [];
 
+  //animation
+  let visitedNodes = [];
+
   openSet.push(startNode);
   while (openSet.length > 0) {
     let smallestIndex = 0;
@@ -16,6 +19,7 @@ function Astar(startNode, endNode) {
     }
 
     let current = openSet[smallestIndex];
+    visitedNodes.push(current);
     if (current === endNode) {
       let temp = current;
       path.push(temp);
@@ -23,7 +27,7 @@ function Astar(startNode, endNode) {
         path.push(temp.previous);
         temp = temp.previous;
       }
-      return path;
+      return {path, visitedNodes};
       console.log("Path has been found");
       //return path
     }
@@ -57,7 +61,7 @@ function Astar(startNode, endNode) {
       }
     }
   }
-  return { path, error: "No path found" };
+  return { path, visitedNodes, error: "No path found" };
 }
 
 function heruistic(a, b) {

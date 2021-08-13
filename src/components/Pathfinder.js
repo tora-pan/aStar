@@ -4,7 +4,7 @@ import Astar from "../astar_algorithm/astar";
 import "./pathfinder.css";
 
 const cols = 25;
-const rows = 15;
+const rows = 10;
 
 const NODE_START_ROW = 0;
 const NODE_START_COL = 0;
@@ -14,6 +14,7 @@ const NODE_END_COL = cols - 1;
 const Pathfinder = () => {
   const [grid, setGrid] = useState([]);
   const [path, setPath] = useState([]);
+  const [visitedNodes, setVisitedNodes] = useState([]);
 
   useEffect(() => {
     initalizeGrid();
@@ -36,7 +37,8 @@ const Pathfinder = () => {
     const startNode = grid[NODE_START_ROW][NODE_START_COL];
     const endNode = grid[NODE_END_ROW][NODE_END_COL];
     let path = Astar(startNode, endNode);
-    setPath(path);
+    setPath(path.path);
+    setVisitedNodes(path.visitedNodes);
   };
   //create spot
   const createSpot = (grid) => {
@@ -82,9 +84,43 @@ const Pathfinder = () => {
     };
   }
 
+  //get shortest path nodes and add a new class to them.
+  const visualizeShortestPath = (shortestPathNodes) => {
+    for(let i=0; i<shortestPathNodes.length; i++){
+      setTimeout(() => {
+        const node = shortestPathNodes[i];
+        document.getElementById(`node-${node.x}-${node.y}`).className = "node node-shortest-path";
+      }, 10*i);
+    }
+  }
+
+  const resetNodes = () => {
+    for(let i=0; i<visitedNodes.length; i++){
+      const node = visitedNodes[i];
+      document.getElementById(`node-${node.x}-${node.y}`).className = "node";
+    }
+  }
+
+  const visualizePath = () =>{
+    for(let i=0; i<=visitedNodes.length; i++){
+      if(i === visitedNodes.length){
+        setTimeout(() => {
+          visualizeShortestPath(path);
+        }, 20*i);
+      }else{
+        setTimeout(() => {
+          const node = visitedNodes[i];
+        document.getElementById(`node-${node.x}-${node.y}`).className = "node node-visited";
+        }, 20*i);
+      }
+    }
+  }
+
   //grid with nodes
   const gridWithNode = (
     <div>
+      <button onClick={visualizePath}>Visualize Path</button>
+      <button onClick={resetNodes}>Reset</button>
       {grid.map((row, rowIndex) => {
         return (
           <div key={rowIndex} className="rowWrapper">
