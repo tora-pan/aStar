@@ -4,7 +4,7 @@ import Astar from "../astar_algorithm/astar";
 import "./pathfinder.css";
 
 const cols = 25;
-const rows = 10;
+const rows = 15;
 
 const NODE_START_ROW = 0;
 const NODE_START_COL = 0;
@@ -37,6 +37,8 @@ const Pathfinder = () => {
     const startNode = grid[NODE_START_ROW][NODE_START_COL];
     const endNode = grid[NODE_END_ROW][NODE_END_COL];
     let path = Astar(startNode, endNode);
+    startNode.isWall = false;
+    endNode.isWall = false;
     setPath(path.path);
     setVisitedNodes(path.visitedNodes);
   };
@@ -73,6 +75,10 @@ const Pathfinder = () => {
     this.h = 0;
     //for a* we need a few labels per node
     this.neighbors = [];
+    this.isWall = false;
+    if(Math.random(1) < 0.1){
+      this.isWall = true;
+    }
     this.previous = undefined;
     this.addneighbors = function (grid) {
       let i = this.x;
@@ -106,12 +112,12 @@ const Pathfinder = () => {
       if(i === visitedNodes.length){
         setTimeout(() => {
           visualizeShortestPath(path);
-        }, 20*i);
+        }, 10*i/2);
       }else{
         setTimeout(() => {
           const node = visitedNodes[i];
         document.getElementById(`node-${node.x}-${node.y}`).className = "node node-visited";
-        }, 20*i);
+        }, 5*i/2);
       }
     }
   }
@@ -125,7 +131,7 @@ const Pathfinder = () => {
         return (
           <div key={rowIndex} className="rowWrapper">
             {row.map((col, colIndex) => {
-              const { isStart, isEnd } = col;
+              const { isStart, isEnd, isWall } = col;
               return (
                 <Node
                   key={colIndex}
@@ -133,6 +139,7 @@ const Pathfinder = () => {
                   isEnd={isEnd}
                   row={rowIndex}
                   col={colIndex}
+                  isWall={isWall}
                 />
               );
             })}

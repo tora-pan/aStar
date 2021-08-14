@@ -12,6 +12,10 @@
   background-color: red;
 }
 
+.node-wall{
+  background-color: black;
+}
+
 
 .node-shortest-path{
   animation-name: shortestPath;
@@ -42,23 +46,26 @@
     border-radius: 10%;
   }
   50%{
-    transform: scale(1.1);
+    background-color: peachpuff;
+  }
+  75%{
+    transform: scale(1.2);
     background-color: peachpuff;
   }
   100%{
     transform: scale(1);
-    background-color: peachpuff;
+    background-color: peachpuff
   }
 }
 
 @keyframes shortestPath {
   0%{
-    transform: scale(.8);
+    transform: scale(.6);
     background-color: blue;
   }
   50%{
-    transform: scale(1.1);
-    background-color: blue;
+    transform: scale(1.2);
+    background-color: darkblue;
   }
   100%{
     transform: scale(1);

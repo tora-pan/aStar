@@ -27,6 +27,7 @@ function Astar(startNode, endNode) {
         path.push(temp.previous);
         temp = temp.previous;
       }
+      console.log({path, visitedNodes});
       return {path, visitedNodes};
       //return path
     }
@@ -38,7 +39,7 @@ function Astar(startNode, endNode) {
     let neighbors = current.neighbors;
     for (let i = 0; i < neighbors.length; i++) {
       let neighbor = neighbors[i];
-      if (!closedSet.includes(neighbor)) {
+      if (!closedSet.includes(neighbor) && !neighbor.isWall) {
         let tempG = current.g + 1;
         let newPath = false;
         if (openSet.includes(neighbor)) {
@@ -54,7 +55,7 @@ function Astar(startNode, endNode) {
 
         if (newPath) {
           neighbor.h = heruistic(neighbor, endNode);
-          neighbor.f = neighbor.h + neighbor.g;
+          neighbor.f = neighbor.g + neighbor.h;
           neighbor.previous = current;
         }
       }
